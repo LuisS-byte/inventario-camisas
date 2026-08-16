@@ -307,6 +307,61 @@ tbody tr:hover {
     color: #0f172a;
 }
 
+.image-cell {
+    width: 64px;
+}
+
+.product-image {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    display: block;
+}
+
+.no-image {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    background: #f1f5f9;
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.image-current {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 16px;
+    padding: 16px;
+    background: var(--soft);
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+}
+
+.image-current img {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+.image-current strong {
+    display: block;
+    color: #0f172a;
+    margin-bottom: 2px;
+}
+
+.image-current small {
+    color: var(--muted);
+}
+
 .description {
     max-width: 260px;
     color: var(--muted);

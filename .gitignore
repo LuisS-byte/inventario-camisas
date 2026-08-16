@@ -1,0 +1,13 @@
+# Dependencias de Composer
+/vendor/
+
+# Variables de entorno con secretos
+.env
+
+# IDE / OS
+.vs/
+.vscode/
+Thumbs.db
+
+# Archivos subidos localmente (nunca deben existir en produccion)
+/public/uploads/

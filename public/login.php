@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__ . '/../config/database.php';
-if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+require_once __DIR__ . '/../config/auth.php'; // activa sesiones en BD y session_start()
 if (!empty($_SESSION['usuario_id'])) { header('Location: index.php'); exit; }
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
