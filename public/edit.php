@@ -52,20 +52,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!ctype_digit($camisa['cantidad'])) $errores[] = 'La cantidad debe ser un entero positivo.';
     if (!is_numeric($camisa['precio']) || (float) $camisa['precio'] < 0) $errores[] = 'El precio debe ser un número válido.';
 
-    // Si viene una imagen nueva, subirla a S3 y borrar la anterior
+    // Subir/reemplazar imagen en S3 SOLO si los campos son validos.
+    // Si hay errores de validacion no se sube la nueva ni se borra la
+    // anterior: el producto conserva su imagen y no quedan huerfanos.
     $imagenKeyNueva = $imagenKeyActual;
-    $hayArchivo = isset($_FILES['imagen']) && ($_FILES['imagen']['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK;
-    if ($hayArchivo) {
-        try {
-            [$nueva] = subirImagen($_FILES['imagen']);
-            if ($nueva !== null) {
-                $imagenKeyNueva = $nueva;
-                if ($imagenKeyActual !== '') {
-                    eliminarObjeto($imagenKeyActual);
+    if (!$errores) {
+        $hayArchivo = isset($_FILES['imagen']) && ($_FILES['imagen']['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK;
+        if ($hayArchivo) {
+            try {
+                [$nueva] = subirImagen($_FILES['imagen']);
+                if ($nueva !== null) {
+                    $imagenKeyNueva = $nueva;
+                    if ($imagenKeyActual !== '') {
+                        eliminarObjeto($imagenKeyActual);
+                    }
                 }
+            } catch (RuntimeException $e) {
+                $errores[] = $e->getMessage();
             }
-        } catch (RuntimeException $e) {
-            $errores[] = $e->getMessage();
         }
     }
 
