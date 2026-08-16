@@ -3,6 +3,10 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../config/auth.php';
+require_once __DIR__ . '/../config/s3.php';
+
+exigirLogin();
 
 $mensaje = $_GET['mensaje'] ?? '';
 $busqueda = trim($_GET['buscar'] ?? '');
@@ -342,6 +346,10 @@ $valorInventario = array_sum(
                         <tr>
 
                             <th>
+                                Imagen
+                            </th>
+
+                            <th>
                                 Nombre
                             </th>
 
@@ -383,6 +391,23 @@ $valorInventario = array_sum(
                     <?php foreach ($camisas as $camisa): ?>
 
                         <tr>
+
+                            <td class="image-cell">
+
+                                <?php
+                                $urlImg = urlFirmadaImagen(!empty($camisa['imagen_key']) ? (string) $camisa['imagen_key'] : null);
+                                if ($urlImg !== null): ?>
+                                    <img
+                                        src="<?= htmlspecialchars($urlImg) ?>"
+                                        alt="<?= htmlspecialchars($camisa['nombre']) ?>"
+                                        class="product-image"
+                                        loading="lazy"
+                                    >
+                                <?php else: ?>
+                                    <span class="no-image">—</span>
+                                <?php endif; ?>
+
+                            </td>
 
                             <td>
 

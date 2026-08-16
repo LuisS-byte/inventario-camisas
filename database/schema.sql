@@ -18,8 +18,22 @@ CREATE TABLE IF NOT EXISTS camisas (
   cantidad INT UNSIGNED NOT NULL DEFAULT 0,
   precio DECIMAL(10,2) NOT NULL DEFAULT 0.00,
   descripcion TEXT NULL,
+  imagen_key VARCHAR(255) NULL,
+  imagen_url VARCHAR(500) NULL,
   creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- Tabla de sesiones compartidas (permite login en multiples EC2)
+CREATE TABLE IF NOT EXISTS sesiones (
+  session_id VARCHAR(128) NOT NULL PRIMARY KEY,
+  usuario_id INT UNSIGNED NULL,
+  datos LONGTEXT NULL,
+  ip VARCHAR(45) NULL,
+  user_agent VARCHAR(255) NULL,
+  ultimo_acceso INT UNSIGNED NOT NULL DEFAULT 0,
+  expiracion INT UNSIGNED NOT NULL DEFAULT 0,
+  INDEX idx_sesiones_expiracion (expiracion)
 ) ENGINE=InnoDB;
 
 INSERT INTO usuarios (usuario, password, nombre)
