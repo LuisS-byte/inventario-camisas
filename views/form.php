@@ -34,11 +34,14 @@ $imagenActual = $esEdicion && !empty($camisa['imagen_actual_url']) ? (string) $c
     <?php endif; ?>
 
     <form class="panel form" action="<?= htmlspecialchars($accion) ?>" method="post" enctype="multipart/form-data">
+
+        <h3 class="form-section-title">Información del producto</h3>
+
         <div class="form-grid">
-            <label>Nombre
+            <label><span class="required">Nombre</span>
                 <input type="text" name="nombre" value="<?= htmlspecialchars((string) $camisa['nombre']) ?>" required>
             </label>
-            <label>Categoría
+            <label><span class="required">Categoría</span>
                 <select name="categoria" required>
                     <?php foreach ($categorias as $cat): ?>
                         <option value="<?= htmlspecialchars($cat) ?>" <?= $camisa['categoria'] === $cat ? 'selected' : '' ?>><?= htmlspecialchars($cat) ?></option>
@@ -47,37 +50,52 @@ $imagenActual = $esEdicion && !empty($camisa['imagen_actual_url']) ? (string) $c
             </label>
         </div>
         <div class="form-grid">
-            <label>Talla
+            <label><span class="required">Talla</span>
                 <select name="talla" required>
                     <?php foreach ($tallas as $t): ?>
                         <option value="<?= $t ?>" <?= $camisa['talla'] === $t ? 'selected' : '' ?>><?= $t ?></option>
                     <?php endforeach; ?>
                 </select>
             </label>
-            <label>Color
+            <label><span class="required">Color</span>
                 <input type="text" name="color" value="<?= htmlspecialchars((string) $camisa['color']) ?>" required>
             </label>
         </div>
+
+        <h3 class="form-section-title">Stock y precio</h3>
+
         <div class="form-grid">
-            <label>Cantidad
+            <label><span class="required">Cantidad</span>
                 <input type="number" name="cantidad" min="0" value="<?= htmlspecialchars((string) $camisa['cantidad']) ?>" required>
             </label>
-            <label>Precio
+            <label><span class="required">Precio</span>
                 <input type="number" name="precio" min="0" step="0.01" value="<?= htmlspecialchars((string) $camisa['precio']) ?>" required>
             </label>
         </div>
+
+        <h3 class="form-section-title">Detalles e imagen</h3>
+
         <label>Descripción
             <textarea name="descripcion" rows="5"><?= htmlspecialchars((string) ($camisa['descripcion'] ?? '')) ?></textarea>
         </label>
         <label>Imagen del producto
-            <input type="file" name="imagen" accept="image/jpeg,image/png,image/webp,image/gif">
+            <input type="file" name="imagen" accept="image/jpeg,image/png,image/webp,image/gif" aria-describedby="hint-imagen">
+            <span class="field-hint" id="hint-imagen">JPG, PNG, WEBP o GIF. Máximo 5 MB.</span>
         </label>
         <?php if ($imagenActual !== ''): ?>
             <div class="image-current">
                 <img src="<?= htmlspecialchars($imagenActual) ?>" alt="Imagen actual del producto">
-                <div>
+                <div class="image-current-text">
                     <strong>Imagen actual</strong>
                     <small>Sube una nueva para reemplazarla.</small>
+                </div>
+            </div>
+        <?php else: ?>
+            <div class="image-current empty">
+                <div class="image-current-placeholder" aria-hidden="true">Sin imagen</div>
+                <div class="image-current-text">
+                    <strong>Sin imagen cargada</strong>
+                    <small>Sube una imagen para que aparezca en el listado.</small>
                 </div>
             </div>
         <?php endif; ?>

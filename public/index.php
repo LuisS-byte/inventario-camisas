@@ -322,9 +322,39 @@ $valorInventario = array_sum(
 
             </div>
 
-            <span class="pill">
-                <?= count($camisas) ?> registros
-            </span>
+            <div class="panel-heading-actions">
+
+                <span class="pill">
+                    <?= count($camisas) ?> registros
+                </span>
+
+                <div
+                    class="view-toggle"
+                    role="group"
+                    aria-label="Cambiar vista del listado"
+                >
+
+                    <button
+                        type="button"
+                        class="view-toggle-btn"
+                        data-vista="grid"
+                        aria-pressed="true"
+                    >
+                        Cuadrícula
+                    </button>
+
+                    <button
+                        type="button"
+                        class="view-toggle-btn"
+                        data-vista="list"
+                        aria-pressed="false"
+                    >
+                        Lista
+                    </button>
+
+                </div>
+
+            </div>
 
         </div>
 
@@ -337,114 +367,66 @@ $valorInventario = array_sum(
 
         <?php else: ?>
 
-            <div class="table-wrap">
+            <div class="product-grid">
 
-                <table>
+                <?php foreach ($camisas as $camisa): ?>
 
-                    <thead>
+                    <article class="product-card">
 
-                        <tr>
+                        <div class="product-card-image">
 
-                            <th>
-                                Imagen
-                            </th>
-
-                            <th>
-                                Nombre
-                            </th>
-
-                            <th>
-                                Categoría
-                            </th>
-
-                            <th>
-                                Talla
-                            </th>
-
-                            <th>
-                                Color
-                            </th>
-
-                            <th>
-                                Cantidad
-                            </th>
-
-                            <th>
-                                Precio
-                            </th>
-
-                            <th>
-                                Descripción
-                            </th>
-
-                            <th>
-                                Acciones
-                            </th>
-
-                        </tr>
-
-                    </thead>
+                            <?php
+                            $urlImg = urlFirmadaImagen(!empty($camisa['imagen_key']) ? (string) $camisa['imagen_key'] : null);
+                            if ($urlImg !== null): ?>
+                                <img
+                                    src="<?= htmlspecialchars($urlImg) ?>"
+                                    alt="<?= htmlspecialchars($camisa['nombre']) ?>"
+                                    loading="lazy"
+                                >
+                            <?php else: ?>
+                                <span class="no-image">—</span>
+                            <?php endif; ?>
 
 
-                    <tbody>
+                            <span
+                                class="stock-badge <?= (int) $camisa['cantidad'] <= 5 ? 'low' : '' ?>"
+                            >
 
-                    <?php foreach ($camisas as $camisa): ?>
+                                <?= (int) $camisa['cantidad'] ?>
 
-                        <tr>
+                                unidades
 
-                            <td class="image-cell">
+                            </span>
 
-                                <?php
-                                $urlImg = urlFirmadaImagen(!empty($camisa['imagen_key']) ? (string) $camisa['imagen_key'] : null);
-                                if ($urlImg !== null): ?>
-                                    <img
-                                        src="<?= htmlspecialchars($urlImg) ?>"
-                                        alt="<?= htmlspecialchars($camisa['nombre']) ?>"
-                                        class="product-image"
-                                        loading="lazy"
-                                    >
-                                <?php else: ?>
-                                    <span class="no-image">—</span>
-                                <?php endif; ?>
 
-                            </td>
+                            <span class="size-badge">
+                                <?= htmlspecialchars($camisa['talla']) ?>
+                            </span>
 
-                            <td>
+                        </div>
 
-                                <strong class="product-name">
-                                    <?= htmlspecialchars($camisa['nombre']) ?>
+
+                        <div class="product-card-body">
+
+                            <h3 class="product-name">
+                                <?= htmlspecialchars($camisa['nombre']) ?>
+                            </h3>
+
+
+                            <p class="meta">
+                                <?= htmlspecialchars($camisa['categoria']) ?> · <?= htmlspecialchars($camisa['color']) ?>
+                            </p>
+
+
+                            <div class="price-row">
+
+                                <strong class="price">
+                                    $<?= number_format((float) $camisa['precio'], 2) ?>
                                 </strong>
 
-                            </td>
-
-
-                            <td>
-
-                                <?= htmlspecialchars($camisa['categoria']) ?>
-
-                            </td>
-
-
-                            <td>
-
-                                <span class="size-badge">
-                                    <?= htmlspecialchars($camisa['talla']) ?>
-                                </span>
-
-                            </td>
-
-
-                            <td>
-
-                                <?= htmlspecialchars($camisa['color']) ?>
-
-                            </td>
-
-
-                            <td>
 
                                 <span
-                                    class="stock-badge <?= (int) $camisa['cantidad'] <= 5 ? 'low' : '' ?>"
+                                    class="list-stock <?= (int) $camisa['cantidad'] <= 5 ? 'low' : '' ?>"
                                 >
 
                                     <?= (int) $camisa['cantidad'] ?>
@@ -453,26 +435,20 @@ $valorInventario = array_sum(
 
                                 </span>
 
-                            </td>
+
+                                <span class="list-size">
+                                    <?= htmlspecialchars($camisa['talla']) ?>
+                                </span>
+
+                            </div>
 
 
-                            <td>
-
-                                <strong>
-                                    $<?= number_format((float) $camisa['precio'], 2) ?>
-                                </strong>
-
-                            </td>
-
-
-                            <td class="description">
-
+                            <p class="description">
                                 <?= htmlspecialchars($camisa['descripcion'] ?? '') ?>
+                            </p>
 
-                            </td>
 
-
-                            <td class="actions">
+                            <div class="actions">
 
                                 <a
                                     class="button small"
@@ -503,15 +479,13 @@ $valorInventario = array_sum(
 
                                 </form>
 
-                            </td>
+                            </div>
 
-                        </tr>
+                        </div>
 
-                    <?php endforeach; ?>
+                    </article>
 
-                    </tbody>
-
-                </table>
+                <?php endforeach; ?>
 
             </div>
 
@@ -520,6 +494,39 @@ $valorInventario = array_sum(
     </section>
 
 </main>
+
+<script>
+(function () {
+    var contenedor = document.querySelector('.product-grid');
+    var botones = document.querySelectorAll('.view-toggle-btn[data-vista]');
+
+    if (!contenedor || botones.length === 0) {
+        return;
+    }
+
+    function aplicar(vista) {
+        var esLista = vista === 'list';
+        contenedor.classList.toggle('vista-lista', esLista);
+        botones.forEach(function (b) {
+            b.setAttribute(
+                'aria-pressed',
+                b.getAttribute('data-vista') === vista ? 'true' : 'false'
+            );
+        });
+    }
+
+    var guardada = localStorage.getItem('inventario_vista');
+    aplicar(guardada === 'list' ? 'list' : 'grid');
+
+    botones.forEach(function (b) {
+        b.addEventListener('click', function () {
+            var vista = b.getAttribute('data-vista');
+            aplicar(vista);
+            localStorage.setItem('inventario_vista', vista);
+        });
+    });
+})();
+</script>
 
 </body>
 
