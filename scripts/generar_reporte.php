@@ -38,6 +38,7 @@ declare(strict_types=1);
 
 require_once dirname(__DIR__) . '/config/env.php';
 require_once dirname(__DIR__) . '/config/aws.php';
+require_once dirname(__DIR__) . '/config/secrets.php';
 
 use Aws\Exception\AwsException;
 
@@ -100,7 +101,7 @@ function main(): int
             . ';charset=utf8mb4';
 
         try {
-            $pdo = new PDO($dsn, (string) env('DB_USER', 'root'), (string) env('DB_PASSWORD', ''), [
+            $pdo = new PDO($dsn, (string) env('DB_USER', 'root'), passwordBaseDatos(), [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES => false,

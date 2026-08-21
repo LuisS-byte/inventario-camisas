@@ -2,12 +2,13 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/env.php';
+require_once __DIR__ . '/secrets.php';
 
 define('DB_HOST', (string) env('DB_HOST', 'localhost'));
 define('DB_PORT', (int) env('DB_PORT', 3306));
 define('DB_NAME', (string) env('DB_NAME', 'inventario_camisas'));
 define('DB_USER', (string) env('DB_USER', 'root'));
-define('DB_PASSWORD', (string) env('DB_PASSWORD', ''));
+define('DB_PASSWORD', passwordBaseDatos());
 define('DB_CHARSET', 'utf8mb4');
 
 function conectarBaseDatos(): PDO
